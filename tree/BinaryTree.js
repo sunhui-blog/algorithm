@@ -189,4 +189,3 @@ tree.min().element // 3
 tree.max().element // 25
 
 tree.remove(11) // 根结点为12
-
