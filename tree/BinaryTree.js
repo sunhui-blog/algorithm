@@ -189,3 +189,9 @@ tree.min().element // 3
 tree.max().element // 25
 
 tree.remove(11) // 根结点为12
+
+tree.getLength()
+
+// 使用BFS计算树中给定级别的节点数
+// 计算所有的节点数
+// 计算树的层级
