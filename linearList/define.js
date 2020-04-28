@@ -71,6 +71,8 @@
    * @mark 对象实现
    * 问题：listInsert 对象插入number会自动转化为字符串/兼容掉了
    * 数组实现类似做各种数组操作 不单独实现了
+   *
+   * 思考：数组插值和对象插值 底层处理的不同 包括内存角度的不同
    */
   class lineList {
     constructor () {
