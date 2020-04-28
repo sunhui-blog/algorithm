@@ -1,5 +1,6 @@
 # algorithm
-algorithm practise
+algorithm javascript practise
 
-1.recursion 递归
-2.
+<ul>
+  <li>3.线性表</li>
+</ul>
