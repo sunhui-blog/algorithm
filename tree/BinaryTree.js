@@ -71,8 +71,8 @@ let insertNode = function (node, newNode) {
 };
 
 // 前序遍历
-let preOrderTraverseNode = function (node, callback) {
-  if (node !== null) {
+let preOrderTraverseNode = (node, callback) => {
+  if (!!node) {
     callback(node.element);
     preOrderTraverseNode(node.prev, callback);
     preOrderTraverseNode(node.next, callback);
@@ -80,8 +80,8 @@ let preOrderTraverseNode = function (node, callback) {
 };
 
 // 中序遍历
-let inOrderTraverseNode = function (node, callback) {
-  if (node !== null) {
+let inOrderTraverseNode = (node, callback) => {
+  if (!!node) {
     inOrderTraverseNode(node.prev, callback);
     callback(node.element);
     inOrderTraverseNode(node.next, callback);
@@ -89,8 +89,8 @@ let inOrderTraverseNode = function (node, callback) {
 };
 
 // 后续遍历
-let postOrderTraverseNode = function (node, callback) {
-  if (node !== null) {
+let postOrderTraverseNode = (node, callback) => {
+  if (!!node) {
     postOrderTraverseNode(node.prev, callback);
     postOrderTraverseNode(node.next, callback);
     callback(node.element);
