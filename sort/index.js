@@ -1,3 +1,6 @@
+// sort原理： https://juejin.im/entry/59eb3405f265da43231a1e2d
+// https://segmentfault.com/a/1190000000410506
+
 const data = {
   "comments": "排序",
   "datas": [
