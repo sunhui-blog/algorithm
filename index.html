@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>表格第一列固定，右边内容可以左右滑动</title>
+    <style type="text/css">
+ *{margin: 0; padding: 0}
+ .table-wrapper{overflow-x:scroll;overflow-y:visible;width:230px;margin-left: 120px;border: 1px solid #f00;}td, th{padding: 5px 20px;width: 100px;}th:first-child{position: fixed;left: 5px}
+    </style>
+</head>
+<body>
+    <div class="table-wrapper">
+    <table id="consumption-data" class="data">
+        <thead class="header">
+            <tr>
+                <th>Month</th>
+                <th>第一列</th>
+                <th>第二列</th>
+                <th>第三列</th>
+                <th>第四列</th>
+            </tr>
+        </thead>
+        <tbody class="results">
+            <tr>
+                <th>Jan</th>
+                <td>3163</td>
+                <td>3163</td>
+                <td>3163</td>
+                <td>3163</td>
+            </tr>
+            <tr>
+                <th>Feb</th>
+                <td>3163</td>
+                <td>3163</td>
+                <td>3163</td>
+                <td>3163</td>
+            </tr>
+            <tr>
+                <th>Mar</th>
+                <td>3163</td>
+                <td>3163</td>
+                <td>3163</td>
+                <td>3163</td>
+            </tr>
+            <tr>
+                <th>Apr</th>
+                <td>3163</td>
+                <td>3163</td>
+                <td>3163</td>
+                <td>3163</td> 
+            </tr>
+            <tr>   
+                <th>May</th>
+                <td>3163</td>
+                <td>3163</td>
+                <td>3163</td>
+                <td>3163</td>
+            </tr>
+            <tr>
+                <th>Jun</th>
+                <td>3163</td>
+                <td>3163</td>
+                <td>3163</td>
+                <td>3163</td>
+            </tr>
+  	    <tr>
+                <th>Jun</th>
+                <td>3163</td>
+                <td>3163</td>
+                <td>3163</td>
+                <td>3163</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

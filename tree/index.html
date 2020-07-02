@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+    .ml {
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <!-- <div id="root" class="ml">111
+    <div class="ml">222
+      <div class="ml">333
+        <div class="ml">444</div>
+      </div>
+      <div class="ml">555</div>
+      <div class="ml">666</div>
+      <div class="ml">777</div>
+    </div>
+    <div class="ml">888</div>
+    <div class="ml">999</div>
+    <div class="ml">000</div>
+  </div> -->
+
+  <div id="root"></div>
+
+  <script>
+    let root = document.getElementById('root')
+
+    let datas = [
+      {
+        "id": 1,
+        "data": "山西省",
+        "children": [
+          {
+            "id": 11,
+            "data": "运城市",
+            "children": [
+              {
+                "id": 111,
+                "data": "永济市"
+              }
+            ]
+          }
+        ] 
+      },
+      {
+        "id": 2,
+        "data": "山东省",
+        "children": [
+          {
+            "id": 11,
+            "data": "青岛市"
+          },
+          {
+            "id": 22,
+            "data": "日照市"
+          }
+        ] 
+      }
+    ]
+
+    createNodes(datas, 'root')
+
+    function createNodes (datas, id) {
+      // 动态生成dom结构
+      datas.forEach((item, index) => {
+        let root = document.getElementById(id)
+
+        let child = document.createElement('div')
+        child.innerHTML = item.data
+        child.id = item.id
+        child.className = 'ml'
+
+        if (item.children) {
+          let more = document.createElement('span')
+          more.innerHTML = '>'
+
+          child.appendChild(more)
+
+          root.appendChild(child)
+
+          createNodes(item.children, item.id)
+        } else {
+          root.appendChild(child)
+        }
+
+        bindEvent(root)
+      })
+    }
+
+    function bindEvent (node) {
+      node.onclick = function (e) {
+        e.stopPropagation()
+        let children = node.children
+
+        for (var i = 0; i < children.length; i++) {
+          if (children[i].style.display === 'none') {
+            children[i].style.display = 'block'
+          } else {
+            children[i].style.display = 'none'
+          }
+        }
+      }
+    }
+  </script>
+</body>
+</html>

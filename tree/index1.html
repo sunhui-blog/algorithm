@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    ul li {
+      list-style: none;
+    }
+
+    .box {
+      display: flex;
+    }
+
+    .target {
+      padding: 0 10px;
+      border: 1px solid #e8e8e8;
+      margin-right: 10px;
+      width: 300px;
+    }
+
+    .tree {
+      flex: 1;
+      padding: 0 10px;
+      border: 1px solid #e8e8e8;
+    }
+  </style>
+</head>
+<body>
+<div class="box">
+  <div class="target">
+    <h4>目标结构</h4>
+    <div>
+      <ul>
+        <li>
+          <span>></span>
+          <label>山西省</label>
+          <ul>
+            <li>
+              <span>></span>
+              <label>运城市</label>
+              <ul>
+                <li>永济市</li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <span>></span>
+          <label>山东省</label>
+          <ul>
+            <li>
+              <label>青岛市</label>
+            </li>
+            <li>
+              <label>日照市</label>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="tree">
+    <h4>生成结构</h4>
+    <div id="root"></div>
+  </div>
+</div>
+
+<script>
+  let datas = [
+    {
+      "id": 1,
+      "label": "山西省",
+      "children": [
+        {
+          "id": 11,
+          "label": "运城市",
+          "children": [
+            {
+              "id": 111,
+              "label": "永济市"
+            }
+          ]
+        }
+      ] 
+    },{
+      "id": 2,
+      "label": "山东省",
+      "children": [
+        {
+          "id": 22,
+          "label": "青岛市"
+        }, {
+          "id": 33,
+          "label": "烟台市"
+        }
+      ]
+    }
+  ]
+
+  class Tree {
+    constructor (id, options) {
+      let datas = options.datas || []
+      this.createNodes(id, datas)
+    }
+
+    createNodes (id, datas) {
+      let root = document.getElementById(id)
+
+      if (datas && datas.length) {
+        let ul = document.createElement('ul')
+        ul.setAttribute('id', 'children')
+        root.append(ul)
+
+        datas.forEach(item => {
+          let li = document.createElement('li')
+          li.id = item.id
+          li.append(`<label>${item.label}</label>`)
+          let remove = document.createElement('span')
+          remove.append('-')
+          li.append(remove)
+
+          if (item.children && item.children.length) {
+            let more = document.createElement('span')
+            more.setAttribute('type', 'more')
+            more.innerHTML = '^'
+            li.insertBefore(more, li.firstChild)
+            ul.append(li)
+
+            this.createNodes(item.id, item.children)
+          } else {
+            ul.append(li)
+          }
+
+          this.bindEvent(li)
+        })
+      }
+    }
+
+    bindEvent (ele) {
+      ele.onclick = (e) => {
+        e.stopPropagation()
+        let firstChild = ele.firstChild
+        let arrow = firstChild.getAttribute('type')
+
+        if (arrow === 'more') {
+          let isExpand = firstChild.innerHTML
+
+          if (isExpand === '^') {
+            firstChild.innerHTML = '>'
+          } else {
+            firstChild.innerHTML = '^'
+          }
+        }
+
+        let lastChild = ele.lastChild
+        if (lastChild.style.display === 'none') {
+          lastChild.style.display = 'block'
+        } else {
+          lastChild.style.display = 'none'
+        }
+      }
+    }
+  }
+
+  let options = {
+    datas: datas
+  }
+
+  /**
+    * @params id 根结点id
+    * @params options 配置项
+  */
+  new Tree('root', options)
+
+</script>
+</body>
+</html>
