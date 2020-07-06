@@ -34,11 +34,11 @@
     <div>
       <ul>
         <li>
-          <span>></span>
+          <span>^</span>
           <label>山西省</label>
           <ul>
             <li>
-              <span>></span>
+              <span>^</span>
               <label>运城市</label>
               <ul>
                 <li>永济市</li>
@@ -47,7 +47,7 @@
           </ul>
         </li>
         <li>
-          <span>></span>
+          <span>^</span>
           <label>山东省</label>
           <ul>
             <li>
@@ -102,6 +102,7 @@
   class Tree {
     constructor (id, options) {
       let datas = options.datas || []
+
       this.createNodes(id, datas)
     }
 
@@ -110,35 +111,52 @@
 
       if (datas && datas.length) {
         let ul = document.createElement('ul')
-        ul.setAttribute('id', 'children')
         root.append(ul)
 
         datas.forEach(item => {
           let li = document.createElement('li')
-          li.id = item.id
-          li.append(`<label>${item.label}</label>`)
+          li.setAttribute('id', item.id)
+
+          let label = document.createElement('label')
+          label.append(item.label)
+
           let remove = document.createElement('span')
+          remove.setAttribute('type', 'remove')
           remove.append('-')
+          this.removeNodes(remove)
+
+          let add = document.createElement('span')
+          add.setAttribute('type', 'add')
+          add.append('+')
+          this.addNodes(add)
+
+          let node = document.createElement('span')
+          node.append(label)
+
+          li.append(add)
           li.append(remove)
 
           if (item.children && item.children.length) {
             let more = document.createElement('span')
             more.setAttribute('type', 'more')
             more.innerHTML = '^'
-            li.insertBefore(more, li.firstChild)
+
+            node.insertBefore(more, node.firstChild)
+            this.expandNodes(node)
+
+            li.insertBefore(node, li.firstChild)
             ul.append(li)
 
             this.createNodes(item.id, item.children)
           } else {
+            li.insertBefore(node, li.firstChild)
             ul.append(li)
           }
-
-          this.bindEvent(li)
         })
       }
     }
 
-    bindEvent (ele) {
+    expandNodes (ele) {
       ele.onclick = (e) => {
         e.stopPropagation()
         let firstChild = ele.firstChild
@@ -154,13 +172,28 @@
           }
         }
 
-        let lastChild = ele.lastChild
-        if (lastChild.style.display === 'none') {
-          lastChild.style.display = 'block'
-        } else {
-          lastChild.style.display = 'none'
+        let child = ele.parentNode.getElementsByTagName('ul')
+
+        for (var i = 0; i < child.length; i++) {
+          if (child[i].style.display === 'none') {
+            child[i].style.display = 'block'
+          } else {
+            child[i].style.display = 'none'
+          }
         }
       }
+    }
+
+    addNodes (ele) {
+      ele.addEventListener('click', () => {
+        ele.parentNode.append('test')
+      }, false)
+    }
+
+    removeNodes (ele) {
+      ele.addEventListener('click', () => {
+        ele.parentNode.parentNode.removeChild(ele.parentNode)
+      }, false)
     }
   }
 
