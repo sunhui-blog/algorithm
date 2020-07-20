@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    ul li {
+      list-style: none;
+    }
+
+    .box {
+      display: flex;
+    }
+
+    .target {
+      padding: 0 10px;
+      border: 1px solid #e8e8e8;
+      margin-right: 10px;
+      width: 300px;
+    }
+
+    .tree {
+      flex: 1;
+      padding: 0 10px;
+      border: 1px solid #e8e8e8;
+    }
+  </style>
+</head>
+<body>
+<div class="box">
+  <div class="target">
+    <h4>目标结构</h4>
+    <div>
+      <ul>
+        <li>
+          <span>^</span>
+          <label>山西省</label>
+          <ul>
+            <li>
+              <span>^</span>
+              <label>运城市</label>
+              <ul>
+                <li>永济市</li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <span>^</span>
+          <label>山东省</label>
+          <ul>
+            <li>
+              <label>青岛市</label>
+            </li>
+            <li>
+              <label>日照市</label>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="tree">
+    <h4>生成结构</h4>
+    <div id="root"></div>
+  </div>
+</div>
+
+<script>
+  var datas = [
+    {
+      "_key": 1,
+      "_label": "山西省",
+      "children": [
+        {
+          "_key": 11,
+          "_label": "运城市",
+          "children": [
+            {
+              "_key": 111,
+              "_label": "永济市"
+            }
+          ]
+        }
+      ] 
+    },{
+      "_key": 2,
+      "_label": "山东省",
+      "children": [
+        {
+          "_key": 22,
+          "_label": "青岛市"
+        }, {
+          "_key": 33,
+          "_label": "烟台市"
+        }
+      ]
+    }
+  ]
+
+  function Node(node) {
+    this._label = node._label || ''
+    this._key = node._key || ''
+    this._hasChild = node.children && !!node.children.length
+    this._childList = this._hasChild && node.children
+    this._expand = node._expand || false
+
+    this.init()
+  }
+
+  Node.prototype.init = function () {
+    var root = document.createElement('ul')
+    var nodeElement = this.createNode()
+
+    root.append(nodeElement)
+  }
+
+  Node.prototype.createNode = function () {
+    var node = document.createElement('li')
+    node.setAttribute('id', this._key)
+
+    if (this._hasChild) {
+      var icon = document.createElement('span')
+      icon.append('^')
+      node.append(icon)
+
+      var parentNode = document.createElement('ul')
+      this._childList.forEach(item => {
+        var childNode = new Node(item)
+
+        parentNode.append(childNode)
+      });
+    }
+
+    var label = document.createElement('label')
+    label.append(this.label)
+
+    node.append(label)
+
+    return node
+  }
+
+  function Tree(id, datas) {
+    var root = document.getElementById(id)
+
+    datas.forEach(item => {
+      var node = new Node(item)
+      root.append(node)
+    })
+  }
+
+  var tree = new Tree('root', datas)
+
+</script>
+
+</body>
+</html>

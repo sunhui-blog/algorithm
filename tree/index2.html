@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    ul li {
+      list-style: none;
+    }
+
+    .box {
+      display: flex;
+    }
+
+    .target {
+      padding: 0 10px;
+      border: 1px solid #e8e8e8;
+      margin-right: 10px;
+      width: 300px;
+    }
+
+    .tree {
+      flex: 1;
+      padding: 0 10px;
+      border: 1px solid #e8e8e8;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <div class="target">
+      <h4>目标结构</h4>
+      <div>
+        <ul>
+          <li>
+            <span>^</span>
+            <label>山西省</label>
+            <ul>
+              <li>
+                <span>^</span>
+                <label>运城市</label>
+                <ul>
+                  <li>永济市</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <span>^</span>
+            <label>山东省</label>
+            <ul>
+              <li>
+                <label>青岛市</label>
+              </li>
+              <li>
+                <label>日照市</label>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="tree">
+      <h4>生成结构</h4>
+      <div id="root"></div>
+    </div>
+  </div>
+
+  <script>
+    let datas = [
+      {
+        "id": 1,
+        "label": "山西省",
+        "children": [
+          {
+            "id": 11,
+            "label": "运城市",
+            "children": [
+              {
+                "id": 111,
+                "label": "永济市"
+              }
+            ]
+          }
+        ] 
+      }, {
+        "id": 2,
+        "label": "山东省",
+        "children": [
+          {
+            "id": 22,
+            "label": "青岛市"
+          }, {
+            "id": 33,
+            "label": "烟台市"
+          }
+        ]
+      }
+    ]
+
+    function Node(option) {
+      this.option = {
+        id: '',
+        label: '',
+        children: [],
+        ...option
+        // parent: '',
+        // isExpand: false
+      }
+    }
+
+    Node.prototype.createElement = function () {
+      var li = document.createElement('li')
+      li.append(this.option.label)
+      li.setAttribute('id', this.option.id)
+
+      return li
+    }
+
+    Node.prototype.append = function () {
+
+    }
+
+    Node.prototype.remove = function () {
+
+    }
+
+    Node.prototype.expand = function () {
+
+    }
+
+    function initTree (rootId) {
+      var root = document.getElementById(rootId)
+
+      datas.map(item => {
+        var node = new Node(item)
+        var nodeHtml = node.createElement()
+
+        root.append(nodeHtml)
+      })
+    }
+
+    initTree('root')
+  </script>
+</body>
+</html>
