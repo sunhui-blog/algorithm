@@ -99,14 +99,17 @@
     }
   ]
 
-  function Node(node) {
+  function Node(node, rootId) {
     this._label = node._label || ''
     this._key = node._key || ''
     this._hasChild = node.children && !!node.children.length
     this._childList = this._hasChild && node.children
     this._expand = node._expand || false
 
-    this.init()
+    if (rootId) {
+      var root = document.getElementById(rootId)
+      root.append(this.init())
+    }
   }
 
   Node.prototype.init = function () {
@@ -114,11 +117,16 @@
     var nodeElement = this.createNode()
 
     root.append(nodeElement)
+
+    return root
   }
 
   Node.prototype.createNode = function () {
     var node = document.createElement('li')
     node.setAttribute('id', this._key)
+    var label = document.createElement('label')
+    label.append(this._label)
+    node.append(label)
 
     if (this._hasChild) {
       var icon = document.createElement('span')
@@ -129,14 +137,11 @@
       this._childList.forEach(item => {
         var childNode = new Node(item)
 
-        parentNode.append(childNode)
+        parentNode.append(childNode.createNode())
       });
+
+      node.append(parentNode)
     }
-
-    var label = document.createElement('label')
-    label.append(this.label)
-
-    node.append(label)
 
     return node
   }
@@ -145,14 +150,12 @@
     var root = document.getElementById(id)
 
     datas.forEach(item => {
-      var node = new Node(item)
-      root.append(node)
+      new Node(item, id)
     })
   }
 
   var tree = new Tree('root', datas)
 
 </script>
-
 </body>
 </html>
