@@ -8,7 +8,13 @@ function Tree(id, datas) {
 }
 
 Tree.prototype.createElement = function () {
+  var targetNode = document.getElementById(this._id)
+  var rootNode = document.createElement('ul')
+
   this._datas.forEach(item => {
-    new Node(item, this._id)
+    var node = new Node(item)
+    rootNode.append(node._node)
   })
+
+  targetNode.append(rootNode)
 }

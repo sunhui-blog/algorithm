@@ -2,10 +2,12 @@ var datas = [
   {
     "_key": 1,
     "_label": "山西省",
+    "_expand": true,
     "children": [
       {
         "_key": 11,
         "_label": "运城市",
+        "_expand": true,
         "children": [
           {
             "_key": 111,
@@ -17,6 +19,7 @@ var datas = [
   }, {
     "_key": 2,
     "_label": "山东省",
+    "_expand": true,
     "children": [
       {
         "_key": 22,
