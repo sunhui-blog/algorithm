@@ -84,7 +84,7 @@
           ]
         }
       ] 
-    },{
+    }, {
       "_key": 2,
       "_label": "山东省",
       "children": [
@@ -102,13 +102,13 @@
   function Node(node, rootId) {
     this._label = node._label || ''
     this._key = node._key || ''
-    this._hasChild = node.children && !!node.children.length
-    this._childList = this._hasChild && node.children
+    this._childList = node.children || []
     this._expand = node._expand || false
+    this.root = null
 
     if (rootId) {
-      var root = document.getElementById(rootId)
-      root.append(this.init())
+      this.root = document.getElementById(rootId)
+      this.root.append(this.init())
     }
   }
 
@@ -128,7 +128,7 @@
     label.append(this._label)
     node.append(label)
 
-    if (this._hasChild) {
+    if (this._childList.length) {
       var icon = document.createElement('span')
       icon.append('^')
       node.append(icon)
@@ -145,6 +145,29 @@
 
     return node
   }
+
+  
+
+
+  Node.prototype.hasChildNodes = function () {
+    return !!this._childList.length
+  }
+
+  Node.prototype.getRootNode = function () {
+    return this.root
+  }
+
+
+
+
+
+
+
+
+
+
+
+
 
   function Tree(id, datas) {
     var root = document.getElementById(id)
