@@ -1,0 +1,15 @@
+ul li {
+  list-style: none;
+}
+.dib {
+  display: inline-block;
+}
+.fr {
+  float: right;
+}
+.hide {
+  display: none;
+}
+.show {
+  display: block;
+}
