@@ -43,13 +43,12 @@ Node.prototype._isExpand = function (node, _nodeLable) {
     var _expandText = this._expand ? '^' : '>'
 
     _nodeExpand.setAttribute('expand', this._expand)
-    _nodeExpand.append(_expandText)
+    _nodeExpand.innerHTML = _expandText
 
     this.expandNode = _nodeExpand
-    this._bindEvent
 
     node.insertBefore(_nodeExpand, _nodeLable)
-    this.expandNodes(_nodeExpand)
+    this.toggleExpand(_nodeExpand)
   }
 }
 
@@ -60,7 +59,7 @@ Node.prototype._renderTool = function (node) {
   var _nodeAdd = document.createElement('span')
   _nodeAdd.setAttribute('type', 'add')
   _nodeAdd.append('+')
-  this._bindEvent('addNode', _nodeAdd)
+  // this._bindEvent('addNode', _nodeAdd)
   this.addNode(_nodeAdd)
 
   var _nodeDelete = document.createElement('span')
@@ -90,11 +89,15 @@ Node.prototype._insertChild = function (node) {
   }
 }
 
-Node.prototype.expandNodes = function (ele) {
-  ele.onclick = (e) => {
+Node.prototype.toggleExpand = function (element) {
+  element.onclick = (e) => {
     e.stopPropagation()
     this._expand = !this._expand
-    let child = ele.parentNode.getElementsByTagName('ul')
+    var _expandText = this._expand ? '^' : '>'
+    element.setAttribute('expand', this._expand)
+    element.innerHTML = _expandText
+
+    let child = element.parentNode.getElementsByTagName('ul')
 
     for (var i = 0; i < child.length; i++) {
       if (child[i].style.display === 'none') {
@@ -106,26 +109,26 @@ Node.prototype.expandNodes = function (ele) {
   }
 }
 
-Node.prototype.addNode = function (ele) {
-  ele.addEventListener('click', () => {
+Node.prototype.addNode = function (element) {
+  element.addEventListener('click', () => {
     var node = new Node({
       _label: 'test',
       _key: 444
     })
 
-    ele.parentNode.parentNode.append(node._node)
+    element.parentNode.parentNode.append(node._node)
   }, false)
 }
 
-Node.prototype.removeNode = function (ele) {
-  ele.addEventListener('click', () => {
-    ele.parentNode.parentNode.parentNode.removeChild(ele.parentNode.parentNode)
+Node.prototype.removeNode = function (element) {
+  element.addEventListener('click', () => {
+    element.parentNode.parentNode.parentNode.removeChild(element.parentNode.parentNode)
   }, false)
 }
 
-Node.prototype._bindEvent = function (eventType, element) {
-  this[eventType](element)
-}
+// Node.prototype._bindEvent = function (eventType, element) {
+//   this[eventType](element)
+// }
 
 Node.prototype.hasChildNodes = function () {
   return this._childList && !!this._childList.length
