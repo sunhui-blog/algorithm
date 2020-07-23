@@ -13,6 +13,7 @@ Tree.prototype.createElement = function () {
 
   this._datas.forEach(item => {
     var node = new Node(item)
+
     rootNode.append(node._node)
   })
 

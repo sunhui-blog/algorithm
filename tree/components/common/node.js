@@ -19,7 +19,7 @@ Node.prototype.init = function () {
 
   this._node = this.createNode()
 
-  this._bindEvent()
+  // this._bindEvent()
 }
 
 Node.prototype.createNode = function () {
@@ -49,6 +49,7 @@ Node.prototype._isExpand = function (node, _nodeLable) {
     this._bindEvent
 
     node.insertBefore(_nodeExpand, _nodeLable)
+    this.expandNodes(_nodeExpand)
   }
 }
 
@@ -60,10 +61,12 @@ Node.prototype._renderTool = function (node) {
   _nodeAdd.setAttribute('type', 'add')
   _nodeAdd.append('+')
   this._bindEvent('addNode', _nodeAdd)
+  this.addNode(_nodeAdd)
 
   var _nodeDelete = document.createElement('span')
   _nodeDelete.setAttribute('type', 'remove')
   _nodeDelete.append('-')
+  this.removeNode(_nodeDelete)
 
   _nodeTool.append(_nodeAdd)
   _nodeTool.append(_nodeDelete)
@@ -87,43 +90,41 @@ Node.prototype._insertChild = function (node) {
   }
 }
 
-Node.prototype._bindEvent = function (eventType, element) {
-  element.onclick = (e) => {
+Node.prototype.expandNodes = function (ele) {
+  ele.onclick = (e) => {
     e.stopPropagation()
     this._expand = !this._expand
+    let child = ele.parentNode.getElementsByTagName('ul')
 
-    if (this._expand) {
-      
+    for (var i = 0; i < child.length; i++) {
+      if (child[i].style.display === 'none') {
+        child[i].style.display = 'block'
+      } else {
+        child[i].style.display = 'none'
+      }
     }
   }
-
-  // this.addNode.onclick = (e) => {
-
-  // }
-
-  // this.removeNode.onclick = (e) => {
-
-  // }
 }
 
-Node.prototype.expandNodes = function () {
-  this._expand = !this._expand
+Node.prototype.addNode = function (ele) {
+  ele.addEventListener('click', () => {
+    var node = new Node({
+      _label: 'test',
+      _key: 444
+    })
 
-  var childNodes = this._node.childNodes
-
-  for (var i = 0; i < childNodes.length; i++) {
-    // console.log(childNodes[i].getAttribute('expand'))
-  }
-
-  // this._node.style.display = this._expand ? 'block' : 'none'
+    ele.parentNode.parentNode.append(node._node)
+  }, false)
 }
 
-Node.prototype.addNode = function (element) {
-  // element.parentNode.append('test')
+Node.prototype.removeNode = function (ele) {
+  ele.addEventListener('click', () => {
+    ele.parentNode.parentNode.parentNode.removeChild(ele.parentNode.parentNode)
+  }, false)
 }
 
-Node.prototype.removeNode = function (element) {
-  // element.parentNode.parentNode.removeChild(element.parentNode)
+Node.prototype._bindEvent = function (eventType, element) {
+  this[eventType](element)
 }
 
 Node.prototype.hasChildNodes = function () {
@@ -131,28 +132,9 @@ Node.prototype.hasChildNodes = function () {
 }
 
 Node.prototype.getRootNode = function () {
-  return this._parentElement
+  return this._node
 }
 
 Node.prototype.destory = function () {
   this.node = null
 }
-
-// return {
-//   'expandNodes': function () {
-//     element.onclick = (e) => {
-//       e.stopPropagation()
-//       this._expand = !this._expand
-
-//       let child = ele.parentNode.getElementsByTagName('ul')
-  
-//       for (var i = 0; i < child.length; i++) {
-//         if (child[i].style.display === 'none') {
-//           child[i].style.display = 'block'
-//         } else {
-//           child[i].style.display = 'none'
-//         }
-//       }
-//     }
-//   }
-// }
