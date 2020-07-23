@@ -1,20 +1,20 @@
 document.write("<script type='text/javascript' src='./common/node.js'></script>");
 
 function Tree(id, datas) {
-  this._datas = datas
-  this._id = id
+  this.datas = datas
+  this.id = id
 
   this.createElement()
 }
 
 Tree.prototype.createElement = function () {
-  var targetNode = document.getElementById(this._id)
+  var targetNode = document.getElementById(this.id)
   var rootNode = document.createElement('ul')
 
-  this._datas.forEach(item => {
-    var node = new Node(item)
+  this.datas.forEach(item => {
+    var element = new Node(item)
 
-    rootNode.append(node._node)
+    rootNode.append(element.node)
   })
 
   targetNode.append(rootNode)

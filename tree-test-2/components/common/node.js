@@ -19,7 +19,7 @@ Node.prototype.init = function () {
 
 Node.prototype.createNode = function () {
   var nodeElement = document.createElement('li')
-  nodeElement.setAttribute('id', this.key) 
+  nodeElement.setAttribute('id', this.key)
 
   var nodeLable = document.createElement('label')
   nodeLable.append(this.label)
@@ -28,6 +28,8 @@ Node.prototype.createNode = function () {
   this.render(nodeElement, nodeLable)
   this.renderTool(nodeElement)
   this.insertChild(nodeElement)
+
+  console.log(nodeElement)
 
   return nodeElement
 }
@@ -40,7 +42,7 @@ Node.prototype.render = function (node, nodeLable) {
     this.expandNode = nodeExpand
 
     node.insertBefore(nodeExpand, nodeLable)
-    this.expand(nodeExpand)
+    this.toggleExpand(nodeExpand)
   }
 }
 
@@ -48,39 +50,39 @@ Node.prototype.renderTool = function (node) {
   var nodeTool = document.createElement('div')
   nodeTool.className = 'dib fr'
 
-  var _nodeAdd = document.createElement('span')
-  _nodeAdd.append('+')
-  this.addChildNode(_nodeAdd)
+  var nodeAdd = document.createElement('span')
+  nodeAdd.append('+')
+  this.addChildNode(nodeAdd)
 
-  var _nodeDelete = document.createElement('span')
-  _nodeDelete.append('-')
-  this.removeChildNode(_nodeDelete)
+  var nodeDelete = document.createElement('span')
+  nodeDelete.append('-')
+  this.removeChildNode(nodeDelete)
 
-  _nodeTool.append(_nodeAdd)
-  _nodeTool.append(_nodeDelete)
+  nodeTool.append(nodeAdd)
+  nodeTool.append(nodeDelete)
 
-  node.append(_nodeTool)
+  node.append(nodeTool)
 }
 
 Node.prototype.insertChild = function (node) {
-  if (this._hasChild) {
-    var _parentNode = document.createElement('ul')
+  if (this.hasChild) {
+    var parentNode = document.createElement('ul')
 
-    this._childList.forEach(item => {
-      var _child = new Node(item)
-      var _childNode = _child.createNode()
+    this.childList.forEach(item => {
+      var child = new Node(item)
+      var childNode = child.createNode()
 
-      _parentNode.append(_childNode)
+      parentNode.append(childNode)
     })
-    node.append(_parentNode)
+    node.append(parentNode)
   }
 }
 
-Node.prototype.expand = function (element) {
+Node.prototype.toggleExpand = function (element) {
   element.onclick = (e) => {
     e.stopPropagation()
-    this._expand = !this._expand
-    element.innerHTML = this._expand ? '^' : '>'
+    this.expand = !this.expand
+    element.innerHTML = this.expand ? '^' : '>'
 
     let child = element.parentNode.getElementsByTagName('ul')
 
@@ -97,8 +99,8 @@ Node.prototype.expand = function (element) {
 Node.prototype.addChildNode = function (element) {
   element.addEventListener('click', () => {
     var node = new Node({
-      _label: 'test',
-      _key: 444
+      label: 'test',
+      key: 444
     })
 
     element.parentNode.parentNode.append(node._node)
@@ -112,11 +114,11 @@ Node.prototype.removeChildNode = function (element) {
 }
 
 Node.prototype.hasChildNodes = function () {
-  return this._childList && !!this._childList.length
+  return this.childList && !!this.childList.length
 }
 
 Node.prototype.getRootNode = function () {
-  return this._node
+  return this.node
 }
 
 Node.prototype.destory = function () {
