@@ -7,3 +7,9 @@ ul li {
 .fr {
   float: right;
 }
+.hide {
+  display: none;
+}
+.show {
+  display: block;
+}

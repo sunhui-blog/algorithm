@@ -51,13 +51,11 @@ Node.prototype._renderTool = function (node) {
   _nodeTool.className = 'dib fr'
 
   var _nodeAdd = document.createElement('span')
-  _nodeAdd.setAttribute('type', 'add')
   _nodeAdd.append('+')
   // this._bindEvent('addNode', _nodeAdd)
   this.addNode(_nodeAdd)
 
   var _nodeDelete = document.createElement('span')
-  _nodeDelete.setAttribute('type', 'remove')
   _nodeDelete.append('-')
   this.removeNode(_nodeDelete)
 
@@ -90,10 +88,10 @@ Node.prototype.toggleExpand = function (element) {
     let child = element.parentNode.getElementsByTagName('ul')
 
     for (var i = 0; i < child.length; i++) {
-      if (child[i].style.display === 'none') {
-        child[i].style.display = 'block'
+      if (child[i].className === 'hide') {
+        child[i].className = 'show'
       } else {
-        child[i].style.display = 'none'
+        child[i].className = 'hide'
       }
     }
   }
