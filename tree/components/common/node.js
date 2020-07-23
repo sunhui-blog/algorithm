@@ -12,9 +12,6 @@ function Node(node) {
 }
 
 Node.prototype.init = function () {
-  this.parentElement = null
-  this.childElement = null
-
   this._hasChild = this.hasChildNodes()
 
   this._node = this.createNode()
@@ -30,20 +27,17 @@ Node.prototype.createNode = function () {
   _nodeLable.append(this._label)
   _nodeElement.append(_nodeLable)
 
-  this._isExpand(_nodeElement, _nodeLable)
+  this._renderExpand(_nodeElement, _nodeLable)
   this._renderTool(_nodeElement)
   this._insertChild(_nodeElement)
 
   return _nodeElement
 }
 
-Node.prototype._isExpand = function (node, _nodeLable) {
+Node.prototype._renderExpand = function (node, _nodeLable) {
   if (this._hasChild) {
     var _nodeExpand = document.createElement('span')
-    var _expandText = this._expand ? '^' : '>'
-
-    _nodeExpand.setAttribute('expand', this._expand)
-    _nodeExpand.innerHTML = _expandText
+    _nodeExpand.innerHTML = this._expand ? '^' : '>'
 
     this.expandNode = _nodeExpand
 
@@ -83,8 +77,6 @@ Node.prototype._insertChild = function (node) {
 
       _parentNode.append(_childNode)
     })
-
-    this.childElement = _parentNode
     node.append(_parentNode)
   }
 }
@@ -93,9 +85,7 @@ Node.prototype.toggleExpand = function (element) {
   element.onclick = (e) => {
     e.stopPropagation()
     this._expand = !this._expand
-    var _expandText = this._expand ? '^' : '>'
-    element.setAttribute('expand', this._expand)
-    element.innerHTML = _expandText
+    element.innerHTML = this._expand ? '^' : '>'
 
     let child = element.parentNode.getElementsByTagName('ul')
 
