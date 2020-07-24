@@ -26,10 +26,6 @@ Node.prototype.createNode = function () {
   nodeElement.append(nodeLable)
 
   this.render(nodeElement, nodeLable)
-  this.renderTool(nodeElement)
-  this.insertChild(nodeElement)
-
-  console.log(nodeElement)
 
   return nodeElement
 }
@@ -43,6 +39,20 @@ Node.prototype.render = function (node, nodeLable) {
 
     node.insertBefore(nodeExpand, nodeLable)
     this.toggleExpand(nodeExpand)
+  }
+
+  this.renderTool(node)
+
+  if (this.hasChild) {
+    var parentNode = document.createElement('ul')
+
+    this.childList.forEach(item => {
+      var child = new Node(item)
+      var childNode = child.createNode()
+
+      parentNode.append(childNode)
+    })
+    node.append(parentNode)
   }
 }
 
@@ -60,23 +70,10 @@ Node.prototype.renderTool = function (node) {
 
   nodeTool.append(nodeAdd)
   nodeTool.append(nodeDelete)
-
+ 
   node.append(nodeTool)
 }
 
-Node.prototype.insertChild = function (node) {
-  if (this.hasChild) {
-    var parentNode = document.createElement('ul')
-
-    this.childList.forEach(item => {
-      var child = new Node(item)
-      var childNode = child.createNode()
-
-      parentNode.append(childNode)
-    })
-    node.append(parentNode)
-  }
-}
 
 Node.prototype.toggleExpand = function (element) {
   element.onclick = (e) => {
