@@ -1,13 +1,25 @@
 /**
  * @function
  * @param {*} node
+ * 
+ * @todo 数据关系的梳理/维护
  */
-function Node(node) {
+function Node(datas) {
+  let node = datas || {}
+  this.nodes = {
+    label: node.label,
+    key: node.key
+  }
   this.label = node.label || ''
   this.key = node.key || ''
   this.expand = node.expand || false
   this.childList = node.children || []
   this.hasChild = this.hasChildNodes()
+
+  this.parentNodes = node.parentNodes || null
+
+  this.hasParent = this.hasParentNodes()
+
   this.node = null
 
   this.render()
@@ -27,18 +39,18 @@ Node.prototype.render = function () {
     var nodeExpand = document.createElement('span')
     nodeExpand.innerHTML = this.expand ? '^' : '>'
 
-    this.expandNode = nodeExpand
-
     nodeElement.insertBefore(nodeExpand, nodeLable)
     this.toggleExpand(nodeExpand)
 
     var parentNode = document.createElement('ul')
 
     this.childList.forEach(item => {
+      item.parentNodes = this.nodes
       var child = new Node(item)
 
       parentNode.append(child.node)
     })
+
     nodeElement.append(parentNode)
   }
 
@@ -83,10 +95,16 @@ Node.prototype.toggleExpand = function (element) {
   }
 }
 
+// @todo prev / next 节点的确认
+
+
 Node.prototype.addChildNode = function (element) {
+  // @todo 数据增加
   element.addEventListener('click', () => {
+    var nodeName = window.prompt('节点名称是什么？', '');
+
     var newNode = new Node({
-      label: 'test',
+      label: nodeName,
       key: 444
     })
 
@@ -95,6 +113,7 @@ Node.prototype.addChildNode = function (element) {
 }
 
 Node.prototype.removeChildNode = function (element) {
+  // @todo 数据删除
   element.addEventListener('click', () => {
     element.parentNode.parentNode.parentNode.removeChild(element.parentNode.parentNode)
   }, false)
@@ -102,6 +121,10 @@ Node.prototype.removeChildNode = function (element) {
 
 Node.prototype.hasChildNodes = function () {
   return this.childList && !!this.childList.length
+}
+
+Node.prototype.hasParentNodes = function () {
+  return this.parentNodes || null
 }
 
 Node.prototype.getRootNode = function () {
@@ -112,22 +135,21 @@ Node.prototype.destory = function () {
   this.node = null
 }
 
+
 function Tree(id, datas) {
-  this.datas = datas
   this.id = id
 
-  this.createElement()
+  Node.call(this, datas)
 }
 
-Tree.prototype.createElement = function () {
+Tree.prototype = new Node()
+
+Tree.prototype.constructor = Tree
+
+Tree.prototype.init = function () {
   var targetNode = document.getElementById(this.id)
   var rootNode = document.createElement('ul')
 
-  this.datas.forEach(item => {
-    var element = new Node(item)
-
-    rootNode.append(element.node)
-  })
-
+  rootNode.append(this.node)
   targetNode.append(rootNode)
 }
