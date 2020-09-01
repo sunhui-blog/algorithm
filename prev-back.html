@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button onclick="stack.prev()"> left </button>
+  <button onclick="stack.push()"> add </button>
+  <button onclick="stack.next()"> right </button>
+
+<script>
+  function ArrayStack () {
+    this.size = null
+    this.limit = -1
+    this.index = -1
+    this.stack = []
+
+    this.setItem = 1
+  }
+
+  ArrayStack.prototype.DEFAULT_SIZE = 128
+
+  ArrayStack.prototype.DEFAULT_LIMIT = -1
+
+  ArrayStack.prototype.push = function () {
+    this.stack.push(this.setItem++)
+
+    console.log(this.stack)
+  }
+
+  ArrayStack.prototype.prev = function () {
+    if (this.index === -1) {
+      this.index = this.stack.length - 1
+    } else {
+      this.index = this.index - 1
+    }
+
+    var lastItem = this.stack[this.index]
+
+    console.log(lastItem)
+  }
+
+  ArrayStack.prototype.next = function () {
+    var nextItem = null
+
+    this.getSize()
+
+    if (this.index < this.size) {
+      this.index = this.index + 1
+    }
+
+    nextItem = this.stack[this.index]
+
+    console.log(nextItem)
+  }
+
+  ArrayStack.prototype.getSize = function () {
+    this.size = this.stack.length
+  }
+
+  var stack = new ArrayStack()
+</script>
+</body>
+</html>
