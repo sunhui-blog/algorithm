@@ -1,25 +1,40 @@
+function Tree(id, node) {
+  this.id = id
+
+  console.log(node)
+
+  Node.call(this, node)
+}
+
+Tree.prototype = new Node()
+
+Tree.prototype.constructor = Tree
+
+Tree.prototype.init = function () {
+  var targetNode = document.getElementById(this.id)
+  var rootNode = document.createElement('ul')
+
+  rootNode.append(this.node)
+  targetNode.append(rootNode)
+}
+
 /**
  * @function
  * @param {*} node
  * 
  * @todo 数据关系的梳理/维护
  */
-function Node(datas) {
-  let node = datas || {}
-  this.nodes = {
-    label: node.label,
-    key: node.key
-  }
+function Node(node) {
+  console.log(node)
   this.label = node.label || ''
   this.key = node.key || ''
   this.expand = node.expand || false
-  this.childList = node.children || []
-  this.hasChild = this.hasChildNodes()
 
+  this.childNodes = node.children || []
   this.parentNodes = node.parentNodes || null
 
+  this.hasChild = this.hasChildNodes()
   this.hasParent = this.hasParentNodes()
-
   this.node = null
 
   this.render()
@@ -44,8 +59,11 @@ Node.prototype.render = function () {
 
     var parentNode = document.createElement('ul')
 
-    this.childList.forEach(item => {
-      item.parentNodes = this.nodes
+    this.childNodes.forEach(item => {
+      item.parentNodes = {
+        label: this.label,
+        key: this.key
+      }
       var child = new Node(item)
 
       parentNode.append(child.node)
@@ -97,6 +115,13 @@ Node.prototype.toggleExpand = function (element) {
 
 // @todo prev / next 节点的确认
 
+Node.prototype.prevNode = function () {
+
+}
+
+Node.prototype.nextNode = function () {
+
+} 
 
 Node.prototype.addChildNode = function (element) {
   // @todo 数据增加
@@ -120,7 +145,7 @@ Node.prototype.removeChildNode = function (element) {
 }
 
 Node.prototype.hasChildNodes = function () {
-  return this.childList && !!this.childList.length
+  return this.childNodes && !!this.childNodes.length
 }
 
 Node.prototype.hasParentNodes = function () {
@@ -133,23 +158,4 @@ Node.prototype.getRootNode = function () {
 
 Node.prototype.destory = function () {
   this.node = null
-}
-
-
-function Tree(id, datas) {
-  this.id = id
-
-  Node.call(this, datas)
-}
-
-Tree.prototype = new Node()
-
-Tree.prototype.constructor = Tree
-
-Tree.prototype.init = function () {
-  var targetNode = document.getElementById(this.id)
-  var rootNode = document.createElement('ul')
-
-  rootNode.append(this.node)
-  targetNode.append(rootNode)
 }
